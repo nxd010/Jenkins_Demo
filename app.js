@@ -6,7 +6,7 @@ const port = 3000;
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello from Jenkins Pipeline!\n');
+  res.end('Hello from Jenkins Pipeline! - Webhook Test Successful!\n');
 });
 
 server.listen(port, hostname, () => {
