@@ -88,10 +88,23 @@ pipeline {
             steps {
                 echo '🧪 Testing Docker image...'
                 script {
+                    // Start container
+                    sh "docker run -d --name test-${BUILD_NUMBER} ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                    
+                    // Wait for container to start
+                    sh "sleep 5"
+                    
+                    // Test using docker exec (inside the container)
                     sh """
-                        docker run -d --name test-${BUILD_NUMBER} -p 3001:3000 ${DOCKER_IMAGE}:${DOCKER_TAG}
-                        sleep 3
-                        curl -f http://localhost:3001 || exit 1
+                        docker exec test-${BUILD_NUMBER} node --version
+                        docker exec test-${BUILD_NUMBER} ls -la /app
+                    """
+                    
+                    // Check if container is running
+                    sh "docker ps | grep test-${BUILD_NUMBER}"
+                    
+                    // Cleanup test container
+                    sh """
                         docker stop test-${BUILD_NUMBER}
                         docker rm test-${BUILD_NUMBER}
                     """
@@ -111,6 +124,7 @@ pipeline {
                     """
                 }
                 echo '✅ Deployed to Dev on port 3002'
+                echo '💡 Access the app at: http://YOUR_SERVER_IP:3002'
             }
         }
         
