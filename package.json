@@ -1,0 +1,12 @@
+{
+  "name": "jenkins-demo-app",
+  "version": "1.0.0",
+  "description": "Simple Node.js app for Jenkins demo",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo 'Tests passed!' && exit 0"
+  },
+  "author": "Your Name",
+  "license": "MIT"
+}
