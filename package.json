@@ -7,6 +7,5 @@
     "start": "node app.js",
     "test": "echo 'Tests passed!' && exit 0"
   },
-  "author": "Your Name",
-  "license": "MIT"
+  "author": "Nischal"
 }

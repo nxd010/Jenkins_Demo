@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo '📥 Cloning repository...'
+                echo 'Cloning repository...'
                 checkout scm
                 script {
                     env.GIT_COMMIT_MSG = sh(
@@ -30,7 +30,7 @@ pipeline {
         
         stage('Environment Info') {
             steps {
-                echo '🔍 Gathering environment information...'
+                echo 'Gathering environment information...'
                 sh '''
                     echo "Node version: $(node --version)"
                     echo "NPM version: $(npm --version)"
@@ -43,7 +43,7 @@ pipeline {
         
         stage('Install Dependencies') {
             steps {
-                echo '📦 Installing dependencies...'
+                echo 'Installing dependencies...'
                 sh 'npm install'
             }
         }
@@ -52,19 +52,19 @@ pipeline {
             parallel {
                 stage('Unit Tests') {
                     steps {
-                        echo '🧪 Running unit tests...'
+                        echo 'Running unit tests...'
                         sh 'npm test'
                     }
                 }
                 stage('Code Linting') {
                     steps {
-                        echo '📝 Checking code quality...'
+                        echo 'Checking code quality...'
                         sh 'echo "Linting passed!"'
                     }
                 }
                 stage('Security Scan') {
                     steps {
-                        echo '🔒 Running security scan...'
+                        echo 'Running security scan...'
                         sh 'echo "No vulnerabilities found!"'
                     }
                 }
@@ -73,7 +73,7 @@ pipeline {
         
         stage('Build Docker Image') {
             steps {
-                echo '🐳 Building Docker image...'
+                echo 'Building Docker image...'
                 script {
                     sh """
                         docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
@@ -86,7 +86,7 @@ pipeline {
         
         stage('Test Docker Image') {
             steps {
-                echo '🧪 Testing Docker image...'
+                echo 'Testing Docker image...'
                 script {
                     // Start container
                     sh "docker run -d --name test-${BUILD_NUMBER} ${DOCKER_IMAGE}:${DOCKER_TAG}"
@@ -109,13 +109,13 @@ pipeline {
                         docker rm test-${BUILD_NUMBER}
                     """
                 }
-                echo '✅ Docker image test passed!'
+                echo 'Docker image test passed!'
             }
         }
         
         stage('Deploy to Dev') {
             steps {
-                echo '🚀 Deploying to Development environment...'
+                echo 'Deploying to Development environment...'
                 script {
                     sh """
                         docker stop ${APP_NAME}-dev || true
@@ -123,16 +123,16 @@ pipeline {
                         docker run -d --name ${APP_NAME}-dev -p 3002:3000 ${DOCKER_IMAGE}:dev
                     """
                 }
-                echo '✅ Deployed to Dev on port 3002'
-                echo '💡 Access the app at: http://YOUR_SERVER_IP:3002'
+                echo 'Deployed to Dev on port 3002'
+                echo 'Access the app at: http://YOUR_SERVER_IP:3002'
             }
         }
         
         stage('Docker Image Info') {
             steps {
-                echo '📊 Docker Images Created:'
+                echo 'Docker Images Created:'
                 sh "docker images | grep ${DOCKER_IMAGE} || true"
-                echo '📊 Running Containers:'
+                echo 'Running Containers:'
                 sh "docker ps | grep ${APP_NAME} || true"
             }
         }
@@ -140,25 +140,19 @@ pipeline {
     
     post {
         success {
-            echo '✅ ========================================='
-            echo '✅ Pipeline completed successfully!'
-            echo '✅ ========================================='
+            echo 'Pipeline completed successfully!'
             echo "Build: #${BUILD_NUMBER}"
             echo "Commit: ${env.GIT_COMMIT_MSG}"
             echo "Author: ${env.GIT_AUTHOR}"
             echo "Docker Image: ${DOCKER_IMAGE}:${DOCKER_TAG}"
-            echo '✅ ========================================='
         }
         failure {
-            echo '❌ ========================================='
-            echo '❌ Pipeline failed!'
-            echo '❌ ========================================='
+            echo 'Pipeline failed!'
             echo "Build: #${BUILD_NUMBER}"
             echo "Check logs for details"
-            echo '❌ ========================================='
-        }
+            }
         always {
-            echo '🧹 Cleaning up...'
+            echo 'Cleaning up...'
             sh '''
                 docker system prune -f || true
                 echo "Cleanup completed"

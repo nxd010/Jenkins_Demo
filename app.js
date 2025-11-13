@@ -42,6 +42,7 @@ const htmlContent = `
 <body>
     <h1>Welcome to Jenkins CI/CD Demo</h1>
     <p>This is a simple Node.js application served over HTTP.</p>
+    <p>Build Number: 1.0.0 Update Readme </p>
 </body>
 </html>
 `;
