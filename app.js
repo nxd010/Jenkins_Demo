@@ -46,6 +46,7 @@ const htmlContent = `
     <p>Build Number: 2 Build Trigger </p>
     <p> Build Number: 3 Webhook Trigger </p>
     <p> Build Number: 4 Dockerfile Added </p>
+    <p> Build Number: 5 Kubernetes Manifest Added </p>
 </body>
 </html>
 `;
